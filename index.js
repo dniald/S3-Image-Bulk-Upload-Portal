@@ -8,7 +8,7 @@ const app = express();
 const storage = multer.memoryStorage();
 
 //file filter
-const fileFilter = (req, file, cb) =>{
+const fileFilter = (req, file, cb) => {
     if (file.mimetype.split("/")[0] === 'image') {
         cb(null, true);
     } else {
@@ -16,15 +16,19 @@ const fileFilter = (req, file, cb) =>{
     }
 }
 
-//multiple upload image
- const multiUpload = multer({storage, fileFilter, limits:{fileSize:100000000}})
+//multiple upload image (max size 10mb)
+const multiUpload = multer({ storage, fileFilter, limits: { fileSize: 1000000000, files: 120 } })
 
- app.post('/uploads', multiUpload.array("file"), async (req, res) => {
-    const file = req.files[0];
-    const result = await s3Upload(file);
-    res.json({status: 'successful upload to s3 bucket'})
- })
+app.post('/uploads', multiUpload.array("file"), async (req, res) => {
+    try {
+        const result = await s3Upload(req.files);
+        console.log(result);
+        res.json({ status: 'successful upload to s3 bucket',result })
+    } catch (error) {
+        console.log(error)
+    }
+})
 
- app.listen(port, ()=> 
- console.log(`Server is running on port: ${port}`)
- )
+app.listen(port, () =>
+    console.log(`Server is running on port: ${port}`)
+)
