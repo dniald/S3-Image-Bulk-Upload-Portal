@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
-const { s3Upload } = require('./upload');
+const { s3Upload } = require('./middleware/upload');
 const port = 4000;
 const app = express();
 
