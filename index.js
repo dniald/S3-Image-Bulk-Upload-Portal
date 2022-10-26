@@ -5,6 +5,7 @@ const { s3Upload } = require('./middleware/upload');
 const port = 4000;
 const app = express();
 
+//use memoryStorage instead of diskStorage (direct to S3 upload from memoryStorage)
 const storage = multer.memoryStorage();
 
 //file filter
@@ -16,7 +17,7 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-//multiple upload image (max size 10mb)
+//multiple upload image (max size 10mb & file limits upload:120)
 const multiUpload = multer({ storage, fileFilter, limits: { fileSize: 1000000000, files: 120 } })
 
 app.post('/uploads', multiUpload.array("file"), async (req, res) => {
