@@ -6,7 +6,7 @@ exports.s3Upload = async(files) => {
     const params = files.map((file) => {
         return {
             Bucket: process.env.AWS_BUCKET_NAME,    //bucket name
-            Key: `mbblogo/${file.originalname}`,    //folder path name
+            Key: `mbblogoghfgh/${file.originalname}`,    //folder path name
             Body: file.buffer                       //fetch body file
         };
     });
@@ -16,3 +16,4 @@ exports.s3Upload = async(files) => {
         params.map((param) => s3.upload(param).promise())
     );
 }
+

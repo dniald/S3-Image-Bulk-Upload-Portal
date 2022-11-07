@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
+const { s3download, s3delete } = require('./middleware/deleteFIle');
+require('./middleware/deleteFIle');
 const { s3Upload } = require('./middleware/upload');
 const port = 4000;
 const app = express();
@@ -29,6 +31,23 @@ app.post('/uploads', multiUpload.array("file"), async (req, res) => {
         console.log(error)
     }
 })
+
+
+
+app.post('/api/delete', async (req, res) => {
+    try {
+        const result = await s3delete(req.files);
+        console.log(result)
+        res.json({status: 'file has been delete', result})
+    } catch (error) {
+        console.log('erorr  dr index file',error)
+    }
+})
+
+app.get('api/get/image', async (req, res) => {
+    const download = await s3download(res.files)
+    console.log(download)
+});
 
 app.listen(port, () =>
     console.log(`Server is running on port: ${port}`)
