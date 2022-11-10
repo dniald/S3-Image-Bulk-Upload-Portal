@@ -19,8 +19,8 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-//multiple upload image (max size 10mb & file limits upload:120)
-const multiUpload = multer({ storage, fileFilter, limits: { fileSize: 1000000000, files: 120 } })
+//multiple upload image (max size 10mb & file limits upload:200)
+const multiUpload = multer({ storage, fileFilter, limits: { fileSize: 1000000000, files: 200 } })
 
 app.post('/uploads', multiUpload.array("file"), async (req, res) => {
     try {
@@ -37,7 +37,7 @@ app.post('/uploads', multiUpload.array("file"), async (req, res) => {
 app.post('/api/delete', async (req, res) => {
     try {
         const result = await s3delete(req.files);
-        console.log(result)
+        // console.log(result)
         res.json({status: 'file has been delete', result})
     } catch (error) {
         console.log('erorr  dr index file',error)

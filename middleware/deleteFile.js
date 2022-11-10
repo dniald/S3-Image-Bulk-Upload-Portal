@@ -10,8 +10,8 @@ s3.deleteObject({
     Bucket: 'image-upload-nodexpress',
     Key: 'logo (10)'
 }, (err, data) => {
-    console.log(err);
-    console.log(data);
+    // console.log(err);
+    // console.log(data);
 })
 //}
 
