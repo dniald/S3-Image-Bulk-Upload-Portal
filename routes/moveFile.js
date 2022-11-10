@@ -1,5 +1,7 @@
 //Move File from folder to another folder (copy and delete files from previous folder)
 
+const router = require('express').Router();
+
 var AWS = require('aws-sdk');
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -10,18 +12,23 @@ var s3 = new AWS.S3();
 
 var params = {
   Bucket: 'image-upload-nodexpress/uploads', // Target bucket 
-  CopySource: 'image-upload-nodexpress/mbblogo/logo (99).png',  //source yg nak dicopy
-  Key: "logo (99).png", //filenameee
+  CopySource: 'image-upload-nodexpress/mbblogo/logo (98).png',  //source yg nak dicopy
+  Key: "logo (98).png", //filenameee
 };
 
+router.post("/movefile", (req, res) => {
 s3.copyObject(params, function (err, data) {
   deleteObj();
-  if (err)
-    console.log(err, err);
+  if (err) {
+    console.log(err);
+    res.json({status: 'Moving file failed'})
+  }
   else {
+    res.json({status: 'File has been moved'})
     console.log(data);
     console.log(deleteObj);
   }
+});
 });
 
  function deleteObj() {
@@ -38,3 +45,5 @@ s3.copyObject(params, function (err, data) {
     console.log(data);
 });
 };
+
+module.exports = router;

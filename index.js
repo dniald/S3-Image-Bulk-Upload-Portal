@@ -32,15 +32,13 @@ app.post('/uploads', multiUpload.array("file"), async (req, res) => {
     }
 })
 
-
-
 app.post('/api/delete', async (req, res) => {
     try {
         const result = await s3delete(req.files);
         // console.log(result)
         res.json({status: 'file has been delete', result})
     } catch (error) {
-        console.log('erorr  dr index file',error)
+        console.log('error  dr index file',error)
     }
 })
 
@@ -48,6 +46,24 @@ app.get('api/get/image', async (req, res) => {
     const download = await s3download(res.files)
     console.log(download)
 });
+
+const copyFile = require('./routes/copyFile');
+const moveFile = require('./routes/moveFile');
+const fileList = require('./routes/fileList');
+
+app.use("/api/v1", copyFile);
+app.use("/api/v1", moveFile);
+app.get("api/v1", fileList);
+
+// app.use("/api/v1", copyFile, async (req, res) => {
+//     try {
+//         const result = copyFile(req.files);
+//         console.log(result)
+//         res.json({status: 'file has been copy', result})
+//     } catch (error) {
+//         console.log('Error copy files',error)
+//     }
+// })
 
 app.listen(port, () =>
     console.log(`Server is running on port: ${port}`)

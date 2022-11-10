@@ -7,11 +7,11 @@ AWS.config.update({
 });
 
 var s3 = new AWS.S3();
-
+var bucketName = 'image-upload-nodexpress';
 var params = {
-  Bucket: 'image-upload-nodexpress/uploads', // Target bucket 
-  CopySource: 'image-upload-nodexpress/mbblogo/logo (99).png',  //source yg nak dicopy
-  Key: "logo (99).png", //filenameee
+  Bucket: bucketName, // Target bucket 
+  CopySource: '/'+bucketName+'/mbblogo/',  //source yg nak dicopy
+  Key: '/mbblogo', //filenameee
 };
 
 s3.copyObject(params, function (err, data) {
@@ -19,6 +19,5 @@ s3.copyObject(params, function (err, data) {
     console.log(err, err);
   else {
     console.log(data);
-    console.log(deleteObj);
   }
 });
