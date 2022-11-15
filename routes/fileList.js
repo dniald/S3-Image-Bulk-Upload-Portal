@@ -12,12 +12,13 @@ var s3 = new AWS.S3();
 
 // calling listObjects
 var Params = {
-  Bucket: 'image-upload-nodexpress',
+  Bucket: process.env.AWS_BUCKET_NAME,
+  // 'image-upload-nodexpress',
 };
 
 // list of the objects in the bucket
-router.get('/list', (req, res) => {
-  s3.listObjects(Params, function (err, data) {
+router.post('/list', (req, res) => {
+  s3.listObjectsV2(Params, function (err, data) {
     if (err) {
       console.log("Error", err);
       res.json({ status: 'Failed' })
